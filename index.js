@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const { connectDDBB } = require('./src/config/ddbb');
 const zonesRouter = require('./src/api/routes/PastoralZones.routes');
+const parishRouter = require('./src/api/routes/Parish.routes');
 
 // Port
 const PORT = 3000;
@@ -18,6 +19,7 @@ app.use(express.json());
 
 //Routes
 app.use('/faithlab/zones', zonesRouter);
+app.use('/faithlab/parishes', parishRouter);
 
 // Handle routes not found
 app.use('*', (req, res, next) => {

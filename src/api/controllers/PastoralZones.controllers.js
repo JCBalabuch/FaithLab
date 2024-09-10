@@ -1,5 +1,4 @@
 // Imports
-
 const PastoralZone = require('../models/PastoralZones.model');
 
 // CRUD
@@ -12,7 +11,7 @@ const createPastoralZone = async (req, res, next) => {
 
     if (existingZone) {
       return res.status(400).json({
-        message: `La Zona Pastoral ${existingZone} ya existe`,
+        message: `La Zona Pastoral ${existingZone} ya existe en la BBDD`,
       });
     }
 
@@ -47,7 +46,9 @@ const getPastoralZone = async (req, res, next) => {
     const pastoralZone = await PastoralZone.findById(id);
 
     if (!pastoralZone) {
-      return res.status(400).json({ message: `Pastoral Zone not found` });
+      return res.status(400).json({
+        message: `La Zona Pastoral ${pastoralZone} no se encuentra en la BBDD`,
+      });
     }
 
     return res.status(200).json(pastoralZone);
@@ -69,7 +70,9 @@ const updatePastoralZone = async (req, res, next) => {
     });
 
     if (!zoneUpdated) {
-      return res.status(404).json({ message: `Zona Pastoral no encontrada` });
+      return res
+        .status(404)
+        .json({ message: `Zona Pastoral no encontrada en la BBDD` });
     }
 
     return res.status(201).json(zoneUpdated);
@@ -88,7 +91,7 @@ const deletePastoralZone = async (req, res, next) => {
     const zoneDeleted = await PastoralZone.findByIdAndDelete(id);
 
     if (!zoneDeleted) {
-      return res.status(404).json('Zona Pastoral no encontrada');
+      return res.status(404).json('Zona Pastoral no encontrada en la BBDD');
     }
 
     return res.status(200).json({
