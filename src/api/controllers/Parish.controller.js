@@ -1,5 +1,4 @@
 // Imports
-const { json } = require('express');
 const Parish = require('../models/Parish.model');
 
 // CRUD
