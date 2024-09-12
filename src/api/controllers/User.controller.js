@@ -1,6 +1,7 @@
 // Imports
 const bcrypt = require('bcrypt');
 const User = require('../models/user.model');
+const { generateSign } = require('../../utils/jwt');
 
 // Register & Login
 // Function to register a user
@@ -25,7 +26,34 @@ const register = async (req, res, next) => {
     return res.status(500).json({ message: `Error creating User: ${error}` });
   }
 };
+
 // Function to login a user
+const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+
+    console.log('l37', user.password);
+
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: 'Usuario o contraseña incorrectos' });
+    }
+
+    if (bcrypt.compareSync(password, user.password)) {
+      const token = generateSign(user._id);
+      return res.status(200).json({ token, user });
+    } else {
+      return res
+        .status(400)
+        .json({ message: 'Usuario o contraseña incorrectos' });
+    }
+  } catch (error) {
+    return res.status(400).json({ message: 'Error login user', error });
+  }
+};
 
 // CRUD
 // Function to create user
@@ -36,4 +64,4 @@ const register = async (req, res, next) => {
 // Function to delete a user
 
 // Exports
-module.exports = { register };
+module.exports = { register, login };

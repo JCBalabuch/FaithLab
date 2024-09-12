@@ -13,6 +13,7 @@ const createParish = async (req, res, next) => {
         .status(400)
         .json({ message: `La Parroquia ${parishName} ya existe en la BBDD` });
     }
+    cd;
 
     const newParish = new Parish(req.body);
 

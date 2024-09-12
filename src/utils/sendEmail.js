@@ -4,15 +4,15 @@ const nodemailer = require('nodemailer');
 // Function to send email
 const sendEmail = async (to, name, password) => {
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: 'Gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
   });
-
-  console.log(process.env.EMAIL_USER);
-  console.log(process.env.EMAIL_PASS);
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
@@ -29,8 +29,22 @@ const sendEmail = async (to, name, password) => {
         `,
   };
 
+  // transporter.sendMail(mailOptions, (err, info) => {
+  //   if (err) {
+  //     console.error('Error sending email', err);
+  //   } else {
+  //     console.log('Email sent');
+  //     res.status(201).send({
+  //       message: 'Profile created',
+  //       success: true,
+  //       element: info,
+  //     });
+  //   }
+  // });
+
   try {
     await transporter.sendMail(mailOptions);
+    console.log('Email sent');
   } catch (error) {
     console.error({ message: `Error sending email`, error });
   }

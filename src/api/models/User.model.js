@@ -10,7 +10,8 @@ const userSchema = new mongoose.Schema(
     names: { type: String, required: true },
     surnames: { type: String, required: true },
     email: { type: String, required: true },
-    password: { type: String, select: false },
+    password: { type: String },
+    // password: { type: String, select: false },
     phoneNumber: { type: String, required: true },
     parish: { type: String, required: true },
     zoneName: { type: String, required: true },
@@ -55,9 +56,11 @@ userSchema.pre('save', async function (next) {
   if (this.isNew) {
     const randomPassword = crypto.randomBytes(4).toString('hex');
 
+    console.log(randomPassword);
+
     this.password = bcrypt.hashSync(randomPassword, 10);
 
-    await sendEmail(this.email, this.name, randomPassword);
+    await sendEmail(this.email, this.names, randomPassword);
   }
   next();
 });
