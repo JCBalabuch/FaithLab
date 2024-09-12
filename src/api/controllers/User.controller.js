@@ -2,6 +2,7 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user.model');
 const { generateSign } = require('../../utils/jwt');
+const { mongoose } = require('mongoose');
 
 // Register & Login
 // Function to register a user
@@ -55,13 +56,98 @@ const login = async (req, res, next) => {
   }
 };
 
-// CRUD
-// Function to create user
+// RUD
 // Function to get all users
+const getUsers = async (req, res, next) => {
+  try {
+    const users = await User.find();
+    return res.status(200).json(users);
+  } catch (error) {
+    return res.status(400).json({ message: 'Error getting users', error });
+  }
+};
+
+// Functionto get a user
+const getUserById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: 'Usuario no encontrado en la Base de Datos' });
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(404).json({ message: 'Error getting the user', error });
+  }
+};
+
+// Function to get user by email
+// const getUserByEmail = async (req, res, next) => {
+//   try {
+//     const { email } = req.body;
+
+//     const user = await User.findOne({ email });
+
+//     if (!user) {
+//       return res
+//         .status(404)
+//         .json({ message: 'Usuario no encontrado en la Base de Datos' });
+//     }
+
+//     return res.status(200).json(user);
+//   } catch (error) {
+//     return res.status(404).json({ message: 'Error getting the user', error });
+//   }
+// };
+
+// Function to get a user
+const getUser = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    // const { id } = req.params;
+
+    let user = await User.findOne({ email });
+
+    // if (id) {
+    //   user = await User.findById(id);
+    // } else if (email) {
+    //   user = await User.findOne({ email });
+    // } else {
+    //   return res.status(404).json({
+    //     message: 'Debe proporcionar un email o escoger un usuario a mostrar',
+    //   });
+    // }
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: 'Usuario no encontrado en la Base de Datos' });
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(404).json({ message: 'Error getting the user', error });
+  }
+};
+
+// Function to return forgotten password
+
 // Function to get all users by Pastoral Zone
+
 // Function to get all users by Parish
 // Function to update a user
 // Function to delete a user
 
 // Exports
-module.exports = { register, login };
+module.exports = {
+  register,
+  login,
+  getUsers,
+  getUserById,
+  // getUserByEmail,
+  getUser,
+};
