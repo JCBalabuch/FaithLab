@@ -8,7 +8,17 @@ const { mongoose } = require('mongoose');
 // Function to register a user
 const register = async (req, res, next) => {
   try {
-    const user = new User(req.body);
+    const user = new User({
+      names: req.body.names,
+      surnames: req.body.surnames,
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
+      parish: req.body.parish,
+      zoneName: req.body.zoneName,
+      pathOfFaith: req.body.pathOfFaith,
+      stage: req.body.stage,
+      profile: req.body.profile,
+    });
 
     const existingUser = await User.findOne({ email: user.email });
 
@@ -19,7 +29,7 @@ const register = async (req, res, next) => {
     }
 
     const userSaved = await user.save();
-    return res.status(200).json({
+    return res.status(201).json({
       message: 'Usuario registrado exitosamente',
       element: userSaved,
     });
@@ -67,60 +77,18 @@ const getUsers = async (req, res, next) => {
   }
 };
 
-// Functionto get a user
-const getUserById = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const user = await User.findById(id);
-
-    if (!user) {
-      return res
-        .status(404)
-        .json({ message: 'Usuario no encontrado en la Base de Datos' });
-    }
-
-    return res.status(200).json(user);
-  } catch (error) {
-    return res.status(404).json({ message: 'Error getting the user', error });
-  }
-};
-
-// Function to get user by email
-// const getUserByEmail = async (req, res, next) => {
-//   try {
-//     const { email } = req.body;
-
-//     const user = await User.findOne({ email });
-
-//     if (!user) {
-//       return res
-//         .status(404)
-//         .json({ message: 'Usuario no encontrado en la Base de Datos' });
-//     }
-
-//     return res.status(200).json(user);
-//   } catch (error) {
-//     return res.status(404).json({ message: 'Error getting the user', error });
-//   }
-// };
-
 // Function to get a user
 const getUser = async (req, res, next) => {
   try {
-    const { email } = req.body;
-    // const { id } = req.params;
+    const { searchBy } = req.query;
+    const searchValue = searchBy === 'id' ? req.query.value : req.body.email;
 
-    let user = await User.findOne({ email });
+    let user;
 
-    // if (id) {
-    //   user = await User.findById(id);
-    // } else if (email) {
-    //   user = await User.findOne({ email });
-    // } else {
-    //   return res.status(404).json({
-    //     message: 'Debe proporcionar un email o escoger un usuario a mostrar',
-    //   });
-    // }
+    user =
+      searchBy === 'id'
+        ? await User.findById(searchValue)
+        : await User.findOne({ email: searchValue });
 
     if (!user) {
       return res
@@ -134,11 +102,54 @@ const getUser = async (req, res, next) => {
   }
 };
 
-// Function to return forgotten password
+// Function to change password
+// const changePass = async (req, res, next) => {
+//   try {
+//     const { id } = req.params;
+//     const { password } = req.body;
+//   } catch (error) {
+//     return res.status(404).json({ message: 'Error updating password', error });
+//   }
+// };
 
 // Function to get all users by Pastoral Zone
+const getUsersByPZ = async (req, res, next) => {
+  try {
+    const { zoneName } = req.body;
+
+    if (!zoneName) {
+      return res
+        .status(400)
+        .json({ message: 'Debes escoger una Zona Pastoral' });
+    }
+
+    const usersByPZ = await User.find({ zoneName });
+    return res.status(200).json(usersByPZ);
+  } catch (error) {
+    return res
+      .status(404)
+      .json({ message: 'Error getting the users by Pastoral Zone', error });
+  }
+};
 
 // Function to get all users by Parish
+const getUsersByParish = async (req, res, next) => {
+  try {
+    const { parish } = req.body;
+
+    if (!parish) {
+      return res.status(400).json({ message: 'Debes escoger una Parroquia' });
+    }
+
+    const usersByParish = await User.find({ parish });
+    return res.status(200).json(usersByParish);
+  } catch (error) {
+    return res
+      .status(404)
+      .json({ message: 'Error getting the users by Pastoral Zone', error });
+  }
+};
+
 // Function to update a user
 // Function to delete a user
 
@@ -147,7 +158,7 @@ module.exports = {
   register,
   login,
   getUsers,
-  getUserById,
-  // getUserByEmail,
   getUser,
+  getUsersByPZ,
+  getUsersByParish,
 };

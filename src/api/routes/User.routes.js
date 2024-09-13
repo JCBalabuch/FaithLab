@@ -3,9 +3,9 @@ const {
   register,
   login,
   getUsers,
-  getUserById,
-  //   getUserByEmail,
   getUser,
+  getUsersByPZ,
+  getUsersByParish,
 } = require('../controllers/user.controller');
 
 const userRoutes = require('express').Router();
@@ -14,8 +14,9 @@ const userRoutes = require('express').Router();
 userRoutes.post('/register', register);
 userRoutes.post('/login', login);
 userRoutes.get('/', getUsers);
-userRoutes.get('/:id', getUserById);
-userRoutes.get('/email', getUser);
+userRoutes.get('/get-user', getUser);
+userRoutes.get('/users-by-pz', getUsersByPZ);
+userRoutes.get('/users-by-parish', getUsersByParish);
 
 // Exports
 module.exports = userRoutes;
