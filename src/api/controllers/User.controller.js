@@ -151,7 +151,95 @@ const getUsersByParish = async (req, res, next) => {
 };
 
 // Function to update a user
+const updateUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const {
+      names,
+      surnames,
+      email,
+      phoneNumber,
+      pathOfFaith,
+      rol,
+      profile,
+      status,
+    } = req.body;
+
+    const updateData = {
+      names,
+      surnames,
+      email,
+      phoneNumber,
+      pathOfFaith,
+      rol,
+      profile,
+      status,
+    };
+
+    if (rol) {
+      updateData.rol = 'Admin';
+    }
+
+    const userUpdated = await User.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!userUpdated) {
+      return res
+        .status(400)
+        .json({ message: 'El usuario no existe en la Base de Datos' });
+    }
+
+    return res.status(200).json(userUpdated);
+  } catch (error) {
+    return res.status(400).json({ message: 'Error updating user', error });
+  }
+};
+
+// Function for a user to update themselves
+const userUpdateItself = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { names, surnames, email, password, phoneNumber } = req.body;
+
+    let updateData = { names, surnames, email, password, phoneNumber };
+
+    if (password) {
+      updateData.password = bcrypt.hashSync(password, 10);
+    }
+
+    const userUpdated = await User.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!userUpdated) {
+      return res
+        .status(400)
+        .json({ message: 'El usuario no existe en la Base de Datos' });
+    }
+
+    return res.status(200).json(userUpdated);
+  } catch (error) {
+    return res.status(400).json({ message: 'Error updating user', error });
+  }
+};
+
 // Function to delete a user
+const deleteUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const userDeleted = await User.findByIdAndDelete(id);
+    return res.status(200).json({
+      message: 'User deleted',
+      userDeleted,
+    });
+  } catch (error) {
+    return res.status(400).json({ message: 'Error deleting user', error });
+  }
+};
 
 // Exports
 module.exports = {
@@ -161,4 +249,7 @@ module.exports = {
   getUser,
   getUsersByPZ,
   getUsersByParish,
+  updateUser,
+  userUpdateItself,
+  deleteUser,
 };
