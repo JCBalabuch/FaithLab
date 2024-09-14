@@ -2,7 +2,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user.model');
 const { generateSign } = require('../../utils/jwt');
-const { mongoose } = require('mongoose');
 
 // Register & Login
 // Function to register a user
@@ -101,16 +100,6 @@ const getUser = async (req, res, next) => {
     return res.status(404).json({ message: 'Error getting the user', error });
   }
 };
-
-// Function to change password
-// const changePass = async (req, res, next) => {
-//   try {
-//     const { id } = req.params;
-//     const { password } = req.body;
-//   } catch (error) {
-//     return res.status(404).json({ message: 'Error updating password', error });
-//   }
-// };
 
 // Function to get all users by Pastoral Zone
 const getUsersByPZ = async (req, res, next) => {
