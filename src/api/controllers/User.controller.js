@@ -113,7 +113,14 @@ const getUsersByPZ = async (req, res, next) => {
     }
 
     const usersByPZ = await User.find({ zoneName });
-    return res.status(200).json(usersByPZ);
+
+    if (usersByPZ.length === 0) {
+      return res.status(404).json({
+        message: `No hay catequistas registrados para la Zona Pastoral ${zoneName}`,
+      });
+    } else {
+      return res.status(200).json(usersByPZ);
+    }
   } catch (error) {
     return res
       .status(404)
@@ -131,11 +138,17 @@ const getUsersByParish = async (req, res, next) => {
     }
 
     const usersByParish = await User.find({ parish });
-    return res.status(200).json(usersByParish);
+    if (usersByParish.length === 0) {
+      return res.status(404).json({
+        message: `No hay catequistas registrados para la parroquia ${parish}`,
+      });
+    } else {
+      return res.status(200).json(usersByParish);
+    }
   } catch (error) {
     return res
       .status(404)
-      .json({ message: 'Error getting the users by Pastoral Zone', error });
+      .json({ message: 'Error getting the users by Parish', error });
   }
 };
 
