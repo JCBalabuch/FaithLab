@@ -178,10 +178,6 @@ const updateUser = async (req, res, next) => {
       status,
     };
 
-    if (rol) {
-      updateData.rol = 'Admin';
-    }
-
     const userUpdated = await User.findByIdAndUpdate(id, updateData, {
       new: true,
       runValidators: true,

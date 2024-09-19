@@ -20,7 +20,7 @@ const isAuth = (...allowedRoles) => {
       if (!user) {
         return res
           .status(404)
-          .json({ message: 'Usuario no encontrado en la Base de Datos' });
+          .json({ message: 'No está autorizado para ejecutar esta acción' });
       }
 
       if (!allowedRoles.includes(user.rol)) {

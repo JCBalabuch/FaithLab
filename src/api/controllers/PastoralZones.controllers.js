@@ -1,5 +1,7 @@
 // Imports
+const Parish = require('../models/Parish.model');
 const PastoralZone = require('../models/PastoralZones.model');
+const User = require('../models/user.model');
 
 // CRUD
 
@@ -30,7 +32,11 @@ const createPastoralZone = async (req, res, next) => {
 // Function to get all Pastoral Zones
 const getPastoralZones = async (req, res, next) => {
   try {
-    const pastoralZones = await PastoralZone.find();
+    const pastoralZones = await PastoralZone.find().populate({
+      path: 'parishes',
+      model: Parish,
+      populate: { path: 'users', model: User },
+    });
     return res.status(200).json(pastoralZones);
   } catch (error) {
     return res

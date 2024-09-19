@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true },
     password: { type: String },
     phoneNumber: { type: String, required: true },
-    parish: { type: String, required: true },
+    parishName: { type: String, required: true },
     zoneName: { type: String, required: true },
     pathOfFaith: {
       type: String,
@@ -29,8 +29,8 @@ const userSchema = new mongoose.Schema(
     profile: {
       type: String,
       enum: [
-        'Asesor',
-        'CoordDioc',
+        'Asesor Diocesano',
+        'Coordinador Diocesano',
         'Formador',
         'Sacerdote',
         'Coordinador',

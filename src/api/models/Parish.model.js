@@ -19,7 +19,7 @@ const parishSchema = mongoose.Schema(
     },
     webPage: { type: String },
     zoneName: { type: String, required: true },
-    users: [],
+    users: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
   },
   {
     timestamps: true,

@@ -1,5 +1,6 @@
 // Imports
 const Parish = require('../models/Parish.model');
+const User = require('../models/user.model');
 
 // CRUD
 // Function to create a Parish
@@ -13,7 +14,6 @@ const createParish = async (req, res, next) => {
         .status(400)
         .json({ message: `La Parroquia ${parishName} ya existe en la BBDD` });
     }
-    cd;
 
     const newParish = new Parish(req.body);
 
@@ -28,7 +28,12 @@ const createParish = async (req, res, next) => {
 // Function to get al parishes
 const getParishes = async (req, res, next) => {
   try {
-    const parishes = await Parish.find();
+    const parishes = await Parish.find().populate({
+      path: 'users',
+      model: User,
+    });
+    console.log(parishes[0].users);
+
     return res.status(200).json(parishes);
   } catch (error) {
     return res
@@ -41,7 +46,7 @@ const getParishes = async (req, res, next) => {
 const getParish = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const parish = await Parish.findById(id);
+    const parish = await Parish.findById(id).populate('users');
 
     if (!parish) {
       return res.status(400).json(`La Parroquia no se encuentra en la BBDD`);
