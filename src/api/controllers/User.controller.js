@@ -101,6 +101,37 @@ const getUser = async (req, res, next) => {
   }
 };
 
+// Function to get all users by Iter
+const getUsersByIter = async (req, res, next) => {
+  try {
+    const { pathOfFaith, stage } = req.body;
+
+    if (!pathOfFaith) {
+      return res.status(400).json({ message: 'Debes escoger un Itinerario' });
+    }
+
+    let filter = { pathOfFaith };
+
+    if (pathOfFaith === 'IUSMA' && stage) {
+      filter.stage = stage;
+    }
+
+    const usersByIter = await User.find(filter);
+
+    if (usersByIter.length === 0) {
+      return res.status(404).json({
+        message: `No hay catequistas registrados para el Itinerario ${pathOfFaith}`,
+      });
+    } else {
+      return res.status(200).json(usersByIter);
+    }
+  } catch (error) {
+    return res
+      .status(404)
+      .json({ message: 'Error getting the users by Iter', error });
+  }
+};
+
 // Function to get all users by Pastoral Zone
 const getUsersByPZ = async (req, res, next) => {
   try {
@@ -245,6 +276,7 @@ module.exports = {
   login,
   getUsers,
   getUser,
+  getUsersByIter,
   getUsersByPZ,
   getUsersByParish,
   updateUser,

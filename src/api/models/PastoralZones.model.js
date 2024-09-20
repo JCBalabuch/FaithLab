@@ -5,8 +5,11 @@ const mongoose = require('mongoose');
 const pastoralZoneSchema = mongoose.Schema(
   {
     zoneName: { type: String, required: true },
-    number: { type: String, required: true },
-    city: { type: String, required: true },
+    number: {
+      type: String,
+      enum: ['I', 'II', 'III', 'IV', 'V', 'VI'],
+      required: true,
+    },
     // parishes: [{ type: String, required: true }],
     parishes: [{ type: mongoose.Types.ObjectId, ref: 'parishes' }],
     // users: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
