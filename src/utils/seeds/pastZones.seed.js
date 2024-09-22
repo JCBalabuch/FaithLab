@@ -1,5 +1,5 @@
 // Imports
-const PastoralZones = require('src/api/models/PastoralZones.model.js');
+const PastoralZones = require('../../api/models/pastoralZones.model');
 
 // Function to add users data in MongoDB
 async function pastoralZonesSeed(pastoralZonesData) {

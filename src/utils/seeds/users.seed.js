@@ -1,5 +1,5 @@
 // Imports
-const User = require('src/api/models/User.model.js');
+const User = require('../../api/models/user.model');
 
 // Function to add users data in MongoDB
 async function usersSeed(usersData) {

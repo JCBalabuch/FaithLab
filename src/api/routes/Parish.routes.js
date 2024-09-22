@@ -5,7 +5,7 @@ const {
   getParish,
   updateParish,
   deleteParish,
-} = require('../controllers/Parish.controller');
+} = require('../controllers/parish.controller');
 
 // Imports
 const parishRouter = require('express').Router();

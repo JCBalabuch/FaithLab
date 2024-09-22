@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
       enum: ['ICA', 'ICAJov', 'IUSMA'],
       required: true,
     },
-    stage: { type: String, enum: ['I', 'II', 'III', 'IV'] },
+    stage: { type: String, enum: ['', 'I', 'II', 'III', 'IV'] },
     rol: {
       type: String,
       enum: ['Master', 'Admin', 'User'],

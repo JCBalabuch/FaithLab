@@ -12,7 +12,7 @@ const register = async (req, res, next) => {
       surnames: req.body.surnames,
       email: req.body.email,
       phoneNumber: req.body.phoneNumber,
-      parish: req.body.parish,
+      parishName: req.body.parishName,
       zoneName: req.body.zoneName,
       pathOfFaith: req.body.pathOfFaith,
       stage: req.body.stage,

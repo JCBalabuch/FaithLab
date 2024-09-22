@@ -1,6 +1,6 @@
 // Imports
-const Parish = require('../models/Parish.model');
-const PastoralZone = require('../models/PastoralZones.model');
+const Parish = require('../models/parish.model');
+const PastoralZone = require('../models/pastoralZones.model');
 const User = require('../models/user.model');
 
 // CRUD

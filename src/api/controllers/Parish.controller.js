@@ -1,5 +1,5 @@
 // Imports
-const Parish = require('../models/Parish.model');
+const Parish = require('../models/parish.model');
 const User = require('../models/user.model');
 
 // CRUD

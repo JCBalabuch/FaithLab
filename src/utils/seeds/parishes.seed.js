@@ -1,5 +1,5 @@
 // Imports
-const Parish = require('src/api/models/Parish.model.js');
+const Parish = require('../../api/models/parish.model');
 
 // Function to add users data in MongoDB
 async function parishSeed(parishData) {
@@ -9,7 +9,7 @@ async function parishSeed(parishData) {
     if (allParishes.length) {
       console.log('Deleting Parishes Data');
 
-      await Parishes.collection.drop();
+      await Parish.collection.drop();
 
       console.log('Parishes Data deleted');
     }

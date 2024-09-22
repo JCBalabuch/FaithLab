@@ -1,9 +1,9 @@
 // Imports
 const fs = require('fs');
 const csv = require('csv-parser');
-const User = require('src/api/models/User.model.js');
-const Parish = require('src/api/models/Parish.model.js');
-const PastoralZone = require('src/api/models/PastoralZones.model.js');
+const User = require('../../api/models/user.model');
+const Parish = require('../../api/models/parish.model');
+const PastoralZone = require('../../api/models/pastoralZones.model');
 
 // Paths to CSV files
 const usersURL = 'src/utils/handleFiles/usersData-FL.csv';
