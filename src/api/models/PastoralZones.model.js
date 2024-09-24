@@ -7,7 +7,7 @@ const pastoralZoneSchema = mongoose.Schema(
     zoneName: { type: String, required: true },
     number: {
       type: String,
-      enum: ['I', 'II', 'III', 'IV', 'V', 'VI'],
+      enum: ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
       required: true,
     },
     parishes: [{ type: mongoose.Types.ObjectId, ref: 'parishes' }],

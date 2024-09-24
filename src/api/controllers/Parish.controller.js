@@ -6,16 +6,42 @@ const User = require('../models/user.model');
 // Function to create a Parish
 const createParish = async (req, res, next) => {
   try {
-    const { parishName } = req.body;
-    const existingParish = await Parish.findOne({ parishName });
+    const {
+      parishName,
+      parishPriest,
+      address,
+      city,
+      phone,
+      email,
+      rrss,
+      webPage,
+      zoneName,
+    } = req.body;
+    const existingParish = await Parish.findOne({ parishName, zoneName });
+
+    console.log('Línea 12', parishName);
+    console.log('Línea 13', zoneName);
+    console.log('Línea 14', existingParish);
 
     if (existingParish) {
       return res
         .status(400)
-        .json({ message: `La Parroquia ${parishName} ya existe en la BBDD` });
+        .json({
+          message: `La Parroquia ${parishName} de la Zona Pastoral ${zoneName} ya existe en la BBDD`,
+        });
     }
 
-    const newParish = new Parish(req.body);
+    const newParish = new Parish({
+      parishName,
+      parishPriest,
+      address,
+      city,
+      phone,
+      email,
+      rrss,
+      webPage,
+      zoneName,
+    });
 
     const parishSaved = await newParish.save();
 
@@ -64,11 +90,40 @@ const getParish = async (req, res, next) => {
 const updateParish = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const {
+      parishName,
+      parishPriest,
+      address,
+      city,
+      phone,
+      email,
+      rrss,
+      webPage,
+      zoneName,
+    } = req.body;
 
-    const parishUpdated = await Parish.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const updateParishFields = {
+      $set: {
+        parishName,
+        parishPriest,
+        address,
+        city,
+        phone,
+        email,
+        rrss,
+        webPage,
+        zoneName,
+      },
+    };
+
+    const parishUpdated = await Parish.findByIdAndUpdate(
+      id,
+      updateParishFields,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
     if (!parishUpdated) {
       return res

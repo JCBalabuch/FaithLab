@@ -44,8 +44,6 @@ const login = async (req, res, next) => {
 
     const user = await User.findOne({ email });
 
-    console.log('l37', user.password);
-
     if (!user) {
       return res
         .status(400)
@@ -162,16 +160,31 @@ const getUsersByPZ = async (req, res, next) => {
 // Function to get all users by Parish
 const getUsersByParish = async (req, res, next) => {
   try {
-    const { parish } = req.body;
+    const { parishName } = req.body;
+    // const { rol } = req.user;
 
-    if (!parish) {
+    const isAuthorized =
+      req.user.rol === 'Master' ||
+      (req.user.rol === 'Admin' && req.user.parishName === parishName);
+
+    if (!isAuthorized) {
+      return res
+        .status(403)
+        .json({
+          message:
+            'No está autorizado para consultar los usuarios de esta parroquia',
+        });
+    }
+
+    if (!parishName) {
       return res.status(400).json({ message: 'Debes escoger una Parroquia' });
     }
 
-    const usersByParish = await User.find({ parish });
+    const usersByParish = await User.find({ parishName });
+
     if (usersByParish.length === 0) {
       return res.status(404).json({
-        message: `No hay catequistas registrados para la parroquia ${parish}`,
+        message: `No hay catequistas registrados para la parroquia ${parishName}`,
       });
     } else {
       return res.status(200).json(usersByParish);
@@ -208,6 +221,23 @@ const updateUser = async (req, res, next) => {
       profile,
       status,
     };
+
+    const userToUpdate = await User.findById(id);
+
+    const isAuthorized =
+      req.user.rol === 'Master' ||
+      (req.user.rol === 'Admin' &&
+        req.user.parishName === userToUpdate.parishName);
+
+    if (!isAuthorized) {
+      return res
+        .status(403)
+        .json({ message: 'No está autorizado para actualizar este usuario' });
+    }
+
+    if (req.user.rol !== 'Master') {
+      delete updateData.rol;
+    }
 
     const userUpdated = await User.findByIdAndUpdate(id, updateData, {
       new: true,
@@ -259,12 +289,25 @@ const userUpdateItself = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const userToDelete = await User.findById(id);
+    const isAuthorized = req.user;
 
-    const userDeleted = await User.findByIdAndDelete(id);
-    return res.status(200).json({
-      message: 'User deleted',
-      userDeleted,
-    });
+    if (
+      isAuthorized.rol === 'Master' ||
+      (isAuthorized.rol === 'Admin' &&
+        isAuthorized.parishName === userToDelete.parishName) ||
+      isAuthorized._id.toString() === id
+    ) {
+      const userDeleted = await User.findByIdAndDelete(id);
+      return res.status(200).json({
+        message: 'User deleted',
+        userDeleted,
+      });
+    } else {
+      return res
+        .status(403)
+        .json({ message: 'No está autorizado a borrar este usuario' });
+    }
   } catch (error) {
     return res.status(400).json({ message: 'Error deleting user', error });
   }
