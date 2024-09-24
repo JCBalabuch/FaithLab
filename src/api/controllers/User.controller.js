@@ -168,12 +168,10 @@ const getUsersByParish = async (req, res, next) => {
       (req.user.rol === 'Admin' && req.user.parishName === parishName);
 
     if (!isAuthorized) {
-      return res
-        .status(403)
-        .json({
-          message:
-            'No está autorizado para consultar los usuarios de esta parroquia',
-        });
+      return res.status(403).json({
+        message:
+          'No está autorizado para consultar los usuarios de esta parroquia',
+      });
     }
 
     if (!parishName) {

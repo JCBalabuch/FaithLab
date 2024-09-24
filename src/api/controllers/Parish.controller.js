@@ -19,16 +19,10 @@ const createParish = async (req, res, next) => {
     } = req.body;
     const existingParish = await Parish.findOne({ parishName, zoneName });
 
-    console.log('Línea 12', parishName);
-    console.log('Línea 13', zoneName);
-    console.log('Línea 14', existingParish);
-
     if (existingParish) {
-      return res
-        .status(400)
-        .json({
-          message: `La Parroquia ${parishName} de la Zona Pastoral ${zoneName} ya existe en la BBDD`,
-        });
+      return res.status(400).json({
+        message: `La Parroquia ${parishName} de la Zona Pastoral ${zoneName} ya existe en la BBDD`,
+      });
     }
 
     const newParish = new Parish({
@@ -58,7 +52,6 @@ const getParishes = async (req, res, next) => {
       path: 'users',
       model: User,
     });
-    console.log(parishes[0].users);
 
     return res.status(200).json(parishes);
   } catch (error) {
