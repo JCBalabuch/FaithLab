@@ -12,11 +12,11 @@ Bcrypt, Crypto, CSV-Parser, Dotenv, Express, Jsonwebtoken, Mongoose, NOdemailer
 
 ## Files Structure
 
-<img src='images\1.General-Structure.png' alt='Files general structure'/>
+<img src='images/1.General-Structure.png' alt='Files general structure'/>
 
-<img src='images\2.API-Structure.png' alt='API files structure'/>
+<img src='images/2.API-Structure.png' alt='API files structure'/>
 
-<img src='images\3.Config-Middlew-Utils-Structure.png' alt='Config, Middlewares and Utils files structure'/>
+<img src='images/3.Config-Middlew-Utils-Structure.png' alt='Config, Middlewares and Utils files structure'/>
 
 ## Instalation
 
