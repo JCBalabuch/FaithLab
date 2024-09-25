@@ -29,19 +29,6 @@ const sendEmail = async (to, name, password) => {
         `,
   };
 
-  // transporter.sendMail(mailOptions, (err, info) => {
-  //   if (err) {
-  //     console.error('Error sending email', err);
-  //   } else {
-  //     console.log('Email sent');
-  //     res.status(201).send({
-  //       message: 'Profile created',
-  //       success: true,
-  //       element: info,
-  //     });
-  //   }
-  // });
-
   try {
     await transporter.sendMail(mailOptions);
     console.log('Email sent');
